@@ -146,4 +146,5 @@ app.post("/login", async (req, res) => {
 app.post("/logout",(req,res)=>{
     res.cookie("token","");
 })
-app.listen(3000);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT);
