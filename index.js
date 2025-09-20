@@ -28,27 +28,69 @@ app.post("/signup",async (req,res)=>{
         console.error(e);
     }
 })
-app.post("/login",async (req,res)=>{
-    const {email,password,phone}=req.body;
-    const user=await user_model.findOne({email})
-    if (!user) return res.status(401).json({ success: false, message: "User not found" });
+// app.post("/login",async (req,res)=>{
+//     const {email,password,phone}=req.body;
+//     const user=await user_model.findOne({email})
+//     if (!user) return res.status(401).json({ success: false, message: "User not found" });
 
-        const match = await bcrypt.compare(password, user.password);
-        if (match) {
-            const token = jwt.sign({ email }, "secret", { expiresIn: '1h' });
-            res.cookie("token", token);
-            return res.status(200).json({
-            success: true,
-            message: "Login successful",
-            token})
-        }
-        else{
-            return res.status(401).json({ success: false, message: "Invalid password" });
-        }
+//         const match = await bcrypt.compare(password, user.password);
+//         if (match) {
+//             const token = jwt.sign({ email }, "secret", { expiresIn: '1h' });
+//             res.cookie("token", token);
+//             return res.status(200).json({
+//             success: true,
+//             message: "Login successful",
+//             token})
+//         }
+//         else{
+//             return res.status(401).json({ success: false, message: "Invalid password" });
+//         }
            
 
 
+// });
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password, phone } = req.body;
+
+    if (!password || (!email && !phone)) {
+      return res.status(400).json({ success: false, message: "Missing fields" });
+    }
+
+    // Find user by email or phone
+    const user = email
+      ? await user_model.findOne({ email })
+      : await user_model.findOne({ phone });
+
+    if (!user) {
+      return res.status(401).json({ success: false, message: "User not found" });
+    }
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(401).json({ success: false, message: "Invalid password" });
+    }
+
+    const token = jwt.sign({ id: user._id }, "secret", { expiresIn: '1h' });
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        phone: user.phone,
+        name: user.name
+      }
+    });
+
+  } catch (error) {
+    console.error("Login Error:", error); // 👈 This will help you debug
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
 });
+
 app.post("/logout",(req,res)=>{
     res.cookie("token","");
 })
