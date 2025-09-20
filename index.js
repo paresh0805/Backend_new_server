@@ -31,15 +31,19 @@ app.post("/signup",async (req,res)=>{
 app.post("/login",async (req,res)=>{
     const {email,password,phone}=req.body;
     const user=await user_model.findOne({email})
-    if (!user) return res.send("User not found");
+    if (!user) return res.status(401).json({ success: false, message: "User not found" });
 
         const match = await bcrypt.compare(password, user.password);
         if (match) {
             const token = jwt.sign({ email }, "secret", { expiresIn: '1h' });
             res.cookie("token", token);
+            return res.status(200).json({
+            success: true,
+            message: "Login successful",
+            token})
         }
         else{
-            res.send("User not found");
+            return res.status(401).json({ success: false, message: "Invalid password" });
         }
            
 
