@@ -23,6 +23,7 @@ app.post("/signup",async (req,res)=>{
     });
     let token=jwt.sign({email},"secret");
     res.cookie("token",token);
+    res.send("done");
     }
     catch(e){
         console.error(e);
