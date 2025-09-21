@@ -5,5 +5,8 @@ const user_schema=new mongoose.Schema({
     phone:Number,
 
 });
-const user_model=mongoose.model('user',user_schema)
-module.exports=user_model
+const user=mongoose.model('user',user_schema)
+export default user
+
+
+
