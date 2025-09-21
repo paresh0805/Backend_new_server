@@ -1,4 +1,5 @@
-const mongoose= require('mongoose')
+import mongoose from 'mongoose';
+
 const user_schema=new mongoose.Schema({
     email:String,
     password:String,
