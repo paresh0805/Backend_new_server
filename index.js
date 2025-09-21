@@ -12,7 +12,7 @@ app.get("/",(req,res)=>{
     res.send("done");
 })
 app.post("/signup",async (req,res)=>{
-    const {email,password,phone}=req.body;
+    const {email,password}=req.body;
     const salt= await bcrypt.genSalt(10);
     const hash= await bcrypt.hash(password,salt)
 
