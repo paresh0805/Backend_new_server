@@ -655,7 +655,7 @@ app.get("/", (req, res) => {
 
 // Signup route
 app.post("/signup", async (req, res) => {
-  const { signup_method, email, phone, password, department } = req.body;
+  const { signupMethod, email, phone, password, department } = req.body;
 
   // if (!signup_method || !password || !department) {
   //   return res.status(400).json({ message: "Missing required fields" });
@@ -678,17 +678,17 @@ if (!department) {
   return res.status(400).json({ error: "department is required" });
 }
 
-if (signup_method === "email" && !email) {
+if (signupMethod === "email" && !email) {
   return res.status(400).json({ error: "email is required for email signup" });
 }
 
-if (signup_method === "phone" && !phone) {
+if (signupMethod === "phone" && !phone) {
   return res.status(400).json({ error: "phone number is required for phone signup" });
 }
 
 
   try {
-    const existingUser = signup_method === "email"
+    const existingUser = signupMethod === "email"
       ? await User.findOne({ email })
       : await User.findOne({ phone });
 
@@ -699,8 +699,8 @@ if (signup_method === "phone" && !phone) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-      email: signup_method === "email" ? email : undefined,
-      phone: signup_method === "phone" ? phone : undefined,
+      email: signupMethod === "email" ? email : undefined,
+      phone: signupMethod === "phone" ? phone : undefined,
       password: hashedPassword,
       department,
     });
