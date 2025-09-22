@@ -725,7 +725,7 @@ if (signup_method === "phone" && !phone) {
     });
   } catch (err) {
     console.error("Signup error:", err);
-    res.status(500).json({ success: false, message: "Signup failed" });
+    res.status(500).json({ success: false, message: "Signup failed hello" });
   }
 });
 
