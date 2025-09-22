@@ -714,7 +714,7 @@ if (signup_method === "phone" && !phone) {
       maxAge: 3600000,
     });
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       user: {
         id: user._id,
@@ -725,7 +725,7 @@ if (signup_method === "phone" && !phone) {
     });
   } catch (err) {
     console.error("Signup error:", err);
-    res.status(500).json({ success: false, message: "Signup failed hello" });
+    res.status(500).json({ success: false, message: "Signup failed" });
   }
 });
 
