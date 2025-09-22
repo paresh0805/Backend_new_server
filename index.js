@@ -657,17 +657,35 @@ app.get("/", (req, res) => {
 app.post("/signup", async (req, res) => {
   const { signup_method, email, phone, password, department } = req.body;
 
-  if (!signup_method || !password || !department) {
-    return res.status(400).json({ message: "Missing required fields" });
-  }
+  // if (!signup_method || !password || !department) {
+  //   return res.status(400).json({ message: "Missing required fields" });
+  // }
 
-  if (signup_method === "email" && !email) {
-    return res.status(400).json({ message: "Email is required" });
-  }
+  // if (signup_method === "email" && !email) {
+  //   return res.status(400).json({ message: "Email is required" });
+  // }
 
-  if (signup_method === "phone" && !phone) {
-    return res.status(400).json({ message: "Phone number is required" });
-  }
+  // if (signup_method === "phone" && !phone) {
+  //   return res.status(400).json({ message: "Phone number is required" });
+  // }
+           if (!signup_method) {
+  return res.status(400).json({ error: "signup_method is required" });
+}
+if (!password) {
+  return res.status(400).json({ error: "password is required" });
+}
+if (!department) {
+  return res.status(400).json({ error: "department is required" });
+}
+
+if (signup_method === "email" && !email) {
+  return res.status(400).json({ error: "email is required for email signup" });
+}
+
+if (signup_method === "phone" && !phone) {
+  return res.status(400).json({ error: "phone number is required for phone signup" });
+}
+
 
   try {
     const existingUser = signup_method === "email"
