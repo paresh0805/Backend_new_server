@@ -668,7 +668,7 @@ app.post("/signup", async (req, res) => {
   // if (signup_method === "phone" && !phone) {
   //   return res.status(400).json({ message: "Phone number is required" });
   // }
-           if (!signup_method) {
+           if (!signupMethod) {
   return res.status(400).json({ error: "signup_method is required" });
 }
 if (!password) {
@@ -756,7 +756,7 @@ app.post("/login", async (req, res) => {
       maxAge: 3600000,
     });
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Login successful",
       user: {
